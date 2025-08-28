@@ -1,0 +1,48 @@
+services:
+  web:
+    container_name: test-web
+    image: nginx:alpine
+    restart: on-failure
+    depends_on:
+      - php
+    environment:
+      NGINX_SERVER_NAME: test.local
+      NGINX_USE_HTTPS: off
+    ports:
+      - "80:80"
+    volumes:
+      - $PWD/docker/nginx/templates:/etc/nginx/templates
+      - $PWD:/var/www/html
+
+  php:
+    container_name: test-php
+    build:
+      context: $PWD/docker/php
+    restart: on-failure
+    depends_on:
+      mysql:
+        condition: service_started
+    volumes:
+      - $PWD/docker/php/conf/local/php.ini:/usr/local/etc/php/conf.d/docker.ini
+      - $PWD:/var/www/html
+
+  mysql:
+    image: mysql:8.0
+    container_name: test-mysql
+    restart: on-failure
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: test
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - mysql:/var/lib/mysql
+      - $PWD/storage/app/mysql:/app/mysql
+
+volumes:
+  mysql:
+    driver: local
