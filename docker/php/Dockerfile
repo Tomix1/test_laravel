@@ -10,6 +10,7 @@ RUN apt-get update \
         curl \
         zip \
         unzip \
+        libzip-dev \
         wget
 
 # Install base php extensions

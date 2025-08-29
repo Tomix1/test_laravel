@@ -11,20 +11,20 @@ services:
     ports:
       - "80:80"
     volumes:
-      - $PWD/docker/nginx/templates:/etc/nginx/templates
-      - $PWD:/var/www/html
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - .:/var/www/html
 
   php:
     container_name: test-php
     build:
-      context: $PWD/docker/php
+      context: ./docker/php
     restart: on-failure
     depends_on:
       mysql:
         condition: service_started
     volumes:
-      - $PWD/docker/php/conf/local/php.ini:/usr/local/etc/php/conf.d/docker.ini
-      - $PWD:/var/www/html
+      - ./docker/php/conf/local/php.ini:/usr/local/etc/php/conf.d/docker.ini
+      - .:/var/www/html
 
   mysql:
     image: mysql:8.0
@@ -41,7 +41,7 @@ services:
       SERVICE_NAME: mysql
     volumes:
       - mysql:/var/lib/mysql
-      - $PWD/storage/app/mysql:/app/mysql
+      - ./storage/app/mysql:/app/mysql
 
 volumes:
   mysql:
