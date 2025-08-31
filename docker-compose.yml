@@ -6,7 +6,7 @@ services:
     depends_on:
       - php
     environment:
-      NGINX_SERVER_NAME: test.local
+      NGINX_SERVER_NAME: localhost
       NGINX_USE_HTTPS: off
     ports:
       - "80:80"
