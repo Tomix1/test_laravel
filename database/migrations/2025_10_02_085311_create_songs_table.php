@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('songs', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->index();
             $table->integer('duration_in_seconds');
 
             $table->foreignId('album_id')
